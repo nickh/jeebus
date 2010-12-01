@@ -20,7 +20,8 @@ count = 100000
 Benchmark.bm do |b|
   b.report('inject') do
     count.times do
-      "messages.index.filter.label".split('.').reverse.inject([]){|a,s| a << [s,a.last].compact.join('.').to_sym}.reverse
+      segments = "messages.index.filter.label".split('.').reverse
+      segments.inject([segments.shift.to_sym]){|a,s| a.unshift "#{s}.#{a.first}".to_sym}
     end
   end
 
